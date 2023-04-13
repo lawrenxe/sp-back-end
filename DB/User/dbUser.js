@@ -34,6 +34,7 @@ const UserModule = () => {
     const _username = _userDetails.username;
     // check if the email already exists
     const emailExists = await User.findOne({ email: _email });
+    mongoose.disconnect();
     if (emailExists) {
       console.log("here");
       throw new Error("EMAIL_EXISTS");
@@ -46,7 +47,6 @@ const UserModule = () => {
     // create new user
     const newUser = new User(_userDetails);
     await newUser.save();
-    console.log("hererererere");
     return newUser;
   };
 
@@ -56,6 +56,7 @@ const UserModule = () => {
     console.log(_email);
     console.log(_password);
     const user = await User.findOne({ email: _email, password: _password });
+    mongoose.disconnect();
     if (user) {
       return user;
     }
@@ -66,21 +67,3 @@ const UserModule = () => {
 };
 
 module.exports = UserModule;
-
-// user
-//   .createUser({
-//     email: "test11@example.com",
-//     firstName: "John",
-//     lastName: "Doe",
-//     username: "johndoe11111",
-//     password: "password123",
-//   })
-//   .then((result) => {
-//     console.log(result);
-//   });
-
-// user
-//   .verifyUser({ email: "test@example.com", password: "password1234" })
-//   .then((result) => {
-//     console.log(result);
-//   });
