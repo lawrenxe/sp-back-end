@@ -17,6 +17,7 @@ router.post("/register", (req, res) => {
     })
     .catch((err) => {
       console.log("err exists");
+      console.log(err);
       if (err.message === "EMAIL_EXISTS") {
         res
           .status(409)

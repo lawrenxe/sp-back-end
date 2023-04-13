@@ -10,31 +10,19 @@ const userSchema = new mongoose.Schema({
 });
 
 const UserModule = () => {
-  mongoose
-    .connect(apiKeys.MONGO_AUTH)
-    .then(() => {
-      console.log("Successfully connected to MongoDB.");
-    })
-    .catch((err) => {
-      console.log("Error connecting to MongoDB:", err);
-    });
+  mongoose;
 
   const User = mongoose.model("Users", userSchema);
 
   let UserModule = {};
-  UserModule.SUCCESS = 1;
-  UserModule.EMAIL_EXISTS = -1;
-  UserModule.EMAIL_NO_EXISTS = -2;
-  UserModule.USERNAME_EXISTS = -3;
-  UserModule.NO_MATCH = -4;
-  UserModule.UNKNOWN_ERROR = 0;
 
   UserModule.createUser = async (_userDetails) => {
+    await mongoose.connect(apiKeys.MONGO_AUTH);
+    console.log("successfully connected to MongoDB.");
     const _email = _userDetails.email;
     const _username = _userDetails.username;
     // check if the email already exists
     const emailExists = await User.findOne({ email: _email });
-    mongoose.disconnect();
     if (emailExists) {
       console.log("here");
       throw new Error("EMAIL_EXISTS");
@@ -56,7 +44,6 @@ const UserModule = () => {
     console.log(_email);
     console.log(_password);
     const user = await User.findOne({ email: _email, password: _password });
-    mongoose.disconnect();
     if (user) {
       return user;
     }
