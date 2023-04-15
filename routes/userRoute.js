@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const dbUser = require("../DB/User/dbUser");
+const dbUser = require("../DB/dbUser");
 
 router.use((req, res, next) => {
   next();
@@ -47,6 +47,20 @@ router.post("/login", (req, res) => {
       } else {
         res.status(500).json({ success: false, message: "Unknown Error" });
       }
+    });
+});
+
+router.delete("/clear", (req, res) => {
+  console.log("[user/clear] DELETE Fired");
+  dbUser()
+    .clearAllUser()
+    .then(() => {
+      console.log("Success");
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log("Failed");
+      console.log(err);
     });
 });
 

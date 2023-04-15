@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const ejs = require("ejs");
+
 const user = require("./routes/userRoute");
-const router = express.Router();
+const post = require("./routes/postRoute");
 
 const PORT = 8080;
 
@@ -32,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/user", user);
+app.use("/post", post);
 
 app.listen(PORT, (err) => {
   if (err) {

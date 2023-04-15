@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { apiKeys } = require("../../apiKeys");
+const { apiKeys } = require("../apiKeys");
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
@@ -43,11 +43,19 @@ const UserModule = () => {
     const _password = _loginDetails.password;
     console.log(_email);
     console.log(_password);
+    await mongoose.connect(apiKeys.MONGO_AUTH);
     const user = await User.findOne({ email: _email, password: _password });
     if (user) {
       return user;
     }
     throw new Error("NO_MATCH");
+  };
+
+  UserModule.clearAllUser = async () => {
+    await mongoose.connect(apiKeys.MONGO_AUTH);
+    console.log("Successfully connected to MongoDB.");
+    await User.deleteMany({});
+    console.log("Successfully cleared all users.");
   };
 
   return UserModule;
